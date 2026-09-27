@@ -2,16 +2,19 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$c = @new mysqli('127.0.0.1', 'root', 'root');
-if ($c->connect_error) {
-    $c = @new mysqli('localhost', 'root', 'root');
-    if ($c->connect_error) { die("Engine Error: Access blocked."); }
-}
+$db_host = '://aivencloud.com'; 
+$db_port = 11491;
+$db_user = 'avnadmin';      
+$db_pass = 'AVNS_8y5YSn28WUzozp0d8_D'; // Paste your same Aiven cloud password here!
+$db_name = 'defaultdb';
 
-$c->query("CREATE DATABASE IF NOT EXISTS yt_notes_hosting");
-$c->select_db("yt_notes_hosting");
+$c = mysqli_init();
+mysqli_ssl_set($c, NULL, NULL, NULL, NULL, NULL);
+$success = @mysqli_real_connect($c, $db_host, $db_user, $db_pass, $db_name, $db_port, NULL, MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
 
-// 1. Structural Layout Matrix Mapping Hardware Products
+if (!$success) { die("Engine Cloud Connection Error: " . mysqli_connect_error()); }
+
+// 1. Structural Hardware Catalog Table Layout Mappings
 $t1 = "CREATE TABLE IF NOT EXISTS hosting_products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -22,9 +25,9 @@ $t1 = "CREATE TABLE IF NOT EXISTS hosting_products (
   storage VARCHAR(50) NOT NULL,
   is_popular TINYINT(1) DEFAULT 0
 )";
-$c->query($t1);
+mysqli_query($c, $t1);
 
-// 2. Structural Layout Matrix Mapping Notification Trackers
+// 2. Structural Notification Tracker Mappings
 $t2 = "CREATE TABLE IF NOT EXISTS payment_notifications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   product_name VARCHAR(100) NOT NULL,
@@ -33,25 +36,19 @@ $t2 = "CREATE TABLE IF NOT EXISTS payment_notifications (
   status ENUM('Pending', 'Approved') DEFAULT 'Pending',
   submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-$c->query($t2);
+mysqli_query($c, $t2);
 
-// Check if status column exists in old databases, insert if missing
-$check = $c->query("SHOW COLUMNS FROM payment_notifications LIKE 'status'");
-if ($check && $check->num_rows == 0) {
-    $c->query("ALTER TABLE payment_notifications ADD COLUMN status ENUM('Pending', 'Approved') DEFAULT 'Pending'");
-}
-
-$c->query("TRUNCATE TABLE hosting_products");
+mysqli_query($c, "TRUNCATE TABLE hosting_products");
 
 $i = "INSERT INTO hosting_products (name, subtitle, price, ram, cpu, storage, is_popular) VALUES 
 ('Lobby Node', 'Starter Node', 4.99, '4 GB RAM', 'Ryzen 7 Shared CPU', '50 GB NVMe Storage', 0),
 ('Minecraft VPS', 'Internal V4', 60.00, '64 GB RAM', 'AMD Ryzen 7 Dedicated', '500 GB NVMe Storage', 1),
 ('Network Node', 'High Performance CPU', 1300.00, '128 GB RAM', 'Dual AMD Ryzen 7', '2 TB NVMe Storage', 0)";
 
-if ($c->query($i)) {
-    echo "🎉 SUCCESS: Database, server configurations, and transaction logs are successfully aligned!";
+if (mysqli_query($c, $i)) {
+    echo "🎉 SUCCESS: Your Online Cloud Database Tables are successfully populated and active!";
 } else {
-    echo "Error processing layout profiles: " . $c->error;
+    echo "Error packing layout indexes: " . mysqli_error($c);
 }
-$c->close();
+mysqli_close($c);
 ?>
