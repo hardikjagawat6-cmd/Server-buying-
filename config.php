@@ -1,6 +1,6 @@
 <?php
 // Your real live online database configurations pulled from Aiven console
-$db_host = '://aivencloud.com'; 
+$db_host = 'server-buying-server-buying.h.aivencloud.com'; 
 $db_port = 11491;
 $db_user = 'avnadmin';      
 $db_pass = 'AVNS_8y5YSn28WUzozp0d8_D'; // Click the eye icon on your Aiven screen to copy this!
