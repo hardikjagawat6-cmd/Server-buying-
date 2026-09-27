@@ -1,13 +1,21 @@
 <?php
-// Uses environment variables online, falls back to your mobile values locally
-$db_host = getenv('DB_HOST') ?: '127.0.0.1';
-$db_user = getenv('DB_USER') ?: 'root';
-$db_pass = getenv('DB_PASS') ?: 'root';
-$db_name = getenv('DB_NAME') ?: 'yt_notes_hosting';
+// Your real live online database configurations pulled from Aiven console
+$db_host = '://aivencloud.com'; 
+$db_port = 11491;
+$db_user = 'avnadmin';      
+$db_pass = 'YOUR_ACTUAL_AIVEN_PASSWORD_HERE'; // Click the eye icon on your Aiven screen to copy this!
+$db_name = 'defaultdb';     
 
-$conn = @new mysqli($db_host, $db_user, $db_pass, $db_name);
-if ($conn->connect_error) {
-    $conn = @new mysqli('localhost', 'root', 'root', $db_name);
-    if ($conn->connect_error) { die("❌ Connection Error"); }
+// Initialize a secure database connection object parameters
+$conn = mysqli_init();
+
+// Disables strict cloud SSL verification checks so it runs flawlessly on basic web hosts
+mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+
+// Establish connection loop parameters
+$success = @mysqli_real_connect($conn, $db_host, $db_user, $db_pass, $db_name, $db_port, NULL, MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
+
+if (!$success) {
+    die("❌ Cloud Database Connection Lost: " . mysqli_connect_error());
 }
 ?>
