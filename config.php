@@ -3,7 +3,7 @@
 $db_host = '://aivencloud.com'; 
 $db_port = 11491;
 $db_user = 'avnadmin';      
-$db_pass = 'YOUR_ACTUAL_AIVEN_PASSWORD_HERE'; // Click the eye icon on your Aiven screen to copy this!
+$db_pass = 'AVNS_8y5YSn28WUzozp0d8_D'; // Click the eye icon on your Aiven screen to copy this!
 $db_name = 'defaultdb';     
 
 // Initialize a secure database connection object parameters
