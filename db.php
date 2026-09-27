@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$db_host = '://aivencloud.com'; 
+$db_host = 'server-buying-server-buying.h.aivencloud.com'; 
 $db_port = 11491;
 $db_user = 'avnadmin';      
 $db_pass = 'AVNS_8y5YSn28WUzozp0d8_D'; // Paste your same Aiven cloud password here!
